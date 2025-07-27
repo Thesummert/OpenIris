@@ -107,11 +107,11 @@ void CameraHandler::setupCameraSensor() {
                                    0);               // 0 = disable , 1 = enable
   camera_sensor->set_aec2(camera_sensor, 0);         // 0 = disable , 1 = enable
   camera_sensor->set_ae_level(camera_sensor, 0);     // -2 to 2
-  camera_sensor->set_aec_value(camera_sensor, 300);  // 0 to 1200
-  // Use a lower aec value for babble to better isolate the face with illuminators 
-  #ifdef CONFIG_CAMERA_MODULE_SWROOM_BABBLE_S3
-    camera_sensor->set_aec_value(camera_sensor, 100);  // 0 to 1200
-  #endif
+  camera_sensor->set_aec_value(camera_sensor, 200);  // 0 to 1200
+// Use a lower aec value for babble to better isolate the face with illuminators
+#ifdef CONFIG_CAMERA_MODULE_SWROOM_BABBLE_S3
+  camera_sensor->set_aec_value(camera_sensor, 200);  // 0 to 1200
+#endif
 
   // controls the gain
   camera_sensor->set_gain_ctrl(camera_sensor, 0);  // 0 = disable , 1 = enable
@@ -200,17 +200,21 @@ void CameraHandler::loadConfigData() {
 }
 
 #ifdef CONFIG_CAMERA_MODULE_SWROOM_BABBLE_S3
-int CameraHandler::setCameraResolution(framesize_t frameSize) {   // For Babble, use a firmware crop as shown by Physdude
+int CameraHandler::setCameraResolution(
+    framesize_t
+        frameSize) {  // For Babble, use a firmware crop as shown by Physdude
   if (camera_sensor->pixformat == PIXFORMAT_JPEG) {
     try {
-        int outputSize = 240;
+      int outputSize = 240;
 
-        int baseRes = 2; //CIF 
-        int ROIsize = 240; 
-        int startPointX = 80; 
-        int startPointY = 28; 
+      int baseRes = 2;  // CIF
+      int ROIsize = 240;
+      int startPointX = 80;
+      int startPointY = 28;
 
-        return camera_sensor->set_res_raw(camera_sensor, baseRes, 0, 0, 0, startPointX, startPointY, ROIsize, ROIsize, outputSize, outputSize, 0, 0);
+      return camera_sensor->set_res_raw(camera_sensor, baseRes, 0, 0, 0,
+                                        startPointX, startPointY, ROIsize,
+                                        ROIsize, outputSize, outputSize, 0, 0);
 
     } catch (...) {
       // they sent us a malformed or unsupported frameSize - rather than crash -
@@ -221,7 +225,8 @@ int CameraHandler::setCameraResolution(framesize_t frameSize) {   // For Babble,
   return -1;
 }
 #else
-int CameraHandler::setCameraResolution(framesize_t frameSize) {   // By default, use the standard method. 
+int CameraHandler::setCameraResolution(
+    framesize_t frameSize) {  // By default, use the standard method.
   if (camera_sensor->pixformat == PIXFORMAT_JPEG) {
     try {
       return camera_sensor->set_framesize(camera_sensor, frameSize);
