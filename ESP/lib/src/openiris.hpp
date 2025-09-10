@@ -17,4 +17,6 @@
 #include <network/wifihandler/wifihandler.hpp>
 #endif  // ETVR_EYE_TRACKER_WEB_API
 
+void set_wifi();
+
 #endif  // OPENIRIS_HPP

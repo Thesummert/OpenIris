@@ -52,12 +52,12 @@ void SerialManager::send_frame() {
 #endif
 
 void SerialManager::init() {
-#ifdef SERIAL_MANAGER_USE_HIGHER_FREQUENCY
-  Serial.begin(3000000);
-#endif
-  if (SERIAL_FLUSH_ENABLED) {
-    Serial.flush();
-  }
+  // #ifdef SERIAL_MANAGER_USE_HIGHER_FREQUENCY
+  //   Serial.begin(3000000);
+  // #endif
+  //   if (SERIAL_FLUSH_ENABLED) {
+  //     Serial.flush();
+  //   }
 }
 
 void SerialManager::run() {
